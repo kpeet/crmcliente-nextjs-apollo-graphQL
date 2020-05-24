@@ -13,3 +13,10 @@ npm i formik yup
 
 formik, leer el contenido del formulario
 yup schema de validación para formularios
+
+
+##Apollo Config
+npm i @apollo/client node-fetch
+
+##GraphQL
+npm i graphql
