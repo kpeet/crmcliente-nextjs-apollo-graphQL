@@ -6,3 +6,10 @@ inicio
 
 npm i
 npm run dev
+
+##Formik para formularios
+npm i formik yup
+
+
+formik, leer el contenido del formulario
+yup schema de validación
