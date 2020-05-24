@@ -12,4 +12,4 @@ npm i formik yup
 
 
 formik, leer el contenido del formulario
-yup schema de validación
+yup schema de validación para formularios
