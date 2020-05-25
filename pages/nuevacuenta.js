@@ -1,8 +1,42 @@
 import Layout from '../components/Layout';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+import {useQuery,} from '@apollo/client';
+import {useMutation, gql} from '@apollo/client';
+
+
+const NUEVA_CUENTA = gql`
+        mutation nuevoUsuario($input: UsuarioInput) {
+          nuevoUsuario(input: $input){
+            id
+            nombre
+            apellido
+            email
+          }
+        }`;
+
+const QUERY = gql`
+        query obtenerUsuario {
+            obtenerUsuario{
+                id
+                nombre
+            }
+        }`;
 
 const NuevaCuenta = () => {
+
+    //Mutation para crear nuevos usuarios
+    const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
+
+
+    //Obtener productos de Graphql
+    /*const {data, loading, error} = useQuery(QUERY);
+
+    console.log(data);
+    console.log(loading);
+    console.log(error);
+    */
+
 
     //Validacion del formulario
     const formik = useFormik({
@@ -13,14 +47,34 @@ const NuevaCuenta = () => {
             password: ''
         },
         validationSchema: Yup.object({
-           nombre: Yup.string().required('El nombre es obligatorio'),
-           apellido: Yup.string().required('El apellido es obligatorio'),
-           email: Yup.string().email('el email no es valido').required('El email es obligatorio'),
-           password: Yup.string().required('El password es obligatorio').min(6,'el password debe ser de más de 5 caracteres'),
+            nombre: Yup.string().required('El nombre es obligatorio'),
+            apellido: Yup.string().required('El apellido es obligatorio'),
+            email: Yup.string().email('el email no es valido').required('El email es obligatorio'),
+            password: Yup.string().required('El password es obligatorio').min(6, 'el password debe ser de más de 5 caracteres'),
         }),
-        onSubmit: valores => {
+        onSubmit: async valores => {
             console.log('enviando')
             console.log(valores)
+            const {nombre, apellido, email, password} = valores;
+            try {
+                await nuevoUsuario({
+                    variables: {
+                        input: {
+                            nombre,
+                            apellido,
+                            email,
+                            password
+                        }
+
+                    }
+                })
+
+            }
+            catch(error) {
+                console.log("CAGO")
+                console.log(error);
+
+            }
         }
     });
     return (
@@ -47,7 +101,7 @@ const NuevaCuenta = () => {
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            {formik.errors.nombre?
+                            {formik.errors.nombre ?
                                 (
                                     <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                                         <p className="font-bold">Error</p>
@@ -55,7 +109,7 @@ const NuevaCuenta = () => {
 
                                     </div>
                                 )
-                                :null
+                                : null
                             }
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="apellido">
@@ -70,7 +124,7 @@ const NuevaCuenta = () => {
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            {formik.errors.apellido?
+                            {formik.errors.apellido ?
                                 (
                                     <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                                         <p className="font-bold">Error</p>
@@ -78,7 +132,7 @@ const NuevaCuenta = () => {
 
                                     </div>
                                 )
-                                :null
+                                : null
                             }
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -93,7 +147,7 @@ const NuevaCuenta = () => {
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            {formik.errors.email?
+                            {formik.errors.email ?
                                 (
                                     <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                                         <p className="font-bold">Error</p>
@@ -101,7 +155,7 @@ const NuevaCuenta = () => {
 
                                     </div>
                                 )
-                                :null
+                                : null
                             }
 
                             <div className="mb-4">
@@ -117,7 +171,7 @@ const NuevaCuenta = () => {
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            {formik.errors.password?
+                            {formik.errors.password ?
                                 (
                                     <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                                         <p className="font-bold">Error</p>
@@ -125,7 +179,7 @@ const NuevaCuenta = () => {
 
                                     </div>
                                 )
-                                :null
+                                : null
                             }
 
                             <input
