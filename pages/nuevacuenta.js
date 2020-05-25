@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import Layout from '../components/Layout';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -23,7 +24,19 @@ const QUERY = gql`
             }
         }`;
 
+const mostratMensaje = () =>{
+    return(
+        <div className="bg-white py-2 px-3 w-full my-3">
+            {mensaje}
+
+        </div>
+    )
+}
+
 const NuevaCuenta = () => {
+
+    //state para mensaje
+    const [mensaje, guardarMensaje] = useState(null)
 
     //Mutation para crear nuevos usuarios
     const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
@@ -57,7 +70,7 @@ const NuevaCuenta = () => {
             console.log(valores)
             const {nombre, apellido, email, password} = valores;
             try {
-                await nuevoUsuario({
+                const data = await nuevoUsuario({
                     variables: {
                         input: {
                             nombre,
@@ -67,19 +80,33 @@ const NuevaCuenta = () => {
                         }
 
                     }
-                })
+                });
+                console.log(data)
 
             }
             catch(error) {
-                console.log("CAGO")
-                console.log(error);
+                guardarMensaje(error.message)
+                console.log(error.message);
+
+                setTimeout(()=>{
+                    guardarMensaje(null);
+                },3000)
 
             }
         }
     });
+
+    const mostrarMensaje = () =>{
+        return (
+            <div className={"bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto"}>
+                <p>{mensaje}</p>
+            </div>
+        )
+    }
     return (
         <div>
             <Layout>
+                {mensaje && mostrarMensaje()}
                 <h1 className="text-center text-2xl text-white font-light">Nueva Cuenta</h1>
 
                 <div className="flex justify-center mt-5">
