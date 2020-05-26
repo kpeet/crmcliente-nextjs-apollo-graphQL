@@ -4,7 +4,7 @@ import { setContext } from 'apollo-link-context'
 
 
 const httpsLink = createHttpLink({
-    uri: 'http://localhost:4000',
+    uri: 'https://kpeet-apollo-server.herokuapp.com/',
     fetch
 })
 
