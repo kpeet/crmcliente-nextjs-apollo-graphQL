@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -41,6 +42,9 @@ const NuevaCuenta = () => {
     //Mutation para crear nuevos usuarios
     const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
 
+    //Routing
+    const router =useRouter();
+
 
     //Obtener productos de Graphql
     /*const {data, loading, error} = useQuery(QUERY);
@@ -70,7 +74,7 @@ const NuevaCuenta = () => {
             console.log(valores)
             const {nombre, apellido, email, password} = valores;
             try {
-                const data = await nuevoUsuario({
+                const {data} = await nuevoUsuario({
                     variables: {
                         input: {
                             nombre,
@@ -82,6 +86,19 @@ const NuevaCuenta = () => {
                     }
                 });
                 console.log(data)
+                console.log("data.nuevoUsuario.nombre" )
+                console.log(data.nuevoUsuario.nombre )
+                //Usuario creado correctamente
+                guardarMensaje(`Se creo correctamente el usuario: ${data.nuevoUsuario.nombre } `);
+                setTimeout(()=>{
+                    guardarMensaje(null);
+                    router.push("/login")
+                },3000)
+
+
+                //Redirigir usuario para iniciar sesión
+
+
 
             }
             catch(error) {
