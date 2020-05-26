@@ -15,8 +15,11 @@ formik, leer el contenido del formulario
 yup schema de validación para formularios
 
 
-##Apollo Config
+##Apollo Config y Fetch
 npm i @apollo/client node-fetch
+
+##Permite editar configuracion de conexion, ejemplo header via context
+npm i apollo-link-context
 
 ##GraphQL
 npm i graphql
