@@ -23,3 +23,6 @@ npm i apollo-link-context
 
 ##GraphQL
 npm i graphql
+
+##Vercel para deploy
+npm i -g vercel
